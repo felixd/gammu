@@ -30,7 +30,7 @@
 #define _GNU_SOURCE
 #include <gammu-config.h>
 
-// #ifdef GSM_ENABLE_ATGEN
+#ifdef GSM_ENABLE_ATGEN
 
 #include <string.h>
 #include <time.h>
