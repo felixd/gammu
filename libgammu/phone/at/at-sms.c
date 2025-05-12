@@ -250,7 +250,8 @@ GSM_Error ATGEN_SetSMSMemory(GSM_StateMachine *s, gboolean SIM, gboolean for_wri
 	/*
 	 * Store message to memory.
 	 */
-	unsigned char cpmsCmdReq[] = "AT+CPMS=\"XX\",\"XX\"\r";
+	// TODO: Poprawić! NA PAŁĘ!
+	unsigned char cpmsCmdReq[] = "AT+CPMS=\"XX\",\"XX\",\"XX\"\r";
 	size_t cpmsCmdReqLength = strlen(cpmsCmdReq);
 
 	/* If phone encodes also values in command, we need normal charset */
@@ -1587,7 +1588,8 @@ GSM_Error ATGEN_GetSMSStatus(GSM_StateMachine *s, GSM_SMSMemoryStatus *status)
 		smprintf(s, "Getting SIM SMS status\n");
 
 		if (Priv->SIMSaveSMS == AT_AVAILABLE) {
-			error = ATGEN_WaitForAutoLen(s, "AT+CPMS=\"SM\",\"SM\"\r", 0x00, 200, ID_GetSMSStatus);
+			// TODO: POPRAWIĆ! Na pałę
+			error = ATGEN_WaitForAutoLen(s, "AT+CPMS=\"SM\",\"SM\",\"SM\"\r", 0x00, 200, ID_GetSMSStatus);
 			Priv->SMSMemoryWrite = TRUE;
 		} else {
 			error = ATGEN_WaitForAutoLen(s, "AT+CPMS=\"SM\"\r", 0x00, 200, ID_GetSMSStatus);
@@ -1610,7 +1612,7 @@ GSM_Error ATGEN_GetSMSStatus(GSM_StateMachine *s, GSM_SMSMemoryStatus *status)
 				error = ATGEN_WaitForAutoLen(s, "AT+CPMS=\"MT\"\r", 0x00, 200, ID_GetSMSStatus);
 				Priv->SMSMemoryWrite = FALSE;
 			} else {
-				error = ATGEN_WaitForAutoLen(s, "AT+CPMS=\"ME\",\"ME\"\r", 0x00, 200, ID_GetSMSStatus);
+				error = ATGEN_WaitForAutoLen(s, "AT+CPMS=\"ME\",\"ME\",\"ME\"\r", 0x00, 200, ID_GetSMSStatus);
 				Priv->SMSMemoryWrite = TRUE;
 			}
 		} else {
