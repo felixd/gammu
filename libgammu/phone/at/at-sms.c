@@ -421,7 +421,7 @@ GSM_Error ATGEN_SetRequestedSMSMemory(GSM_StateMachine *s, GSM_MemoryType memory
 
 	// TODO: NA PAŁĘ
 	// snprintf(command, 20, "AT+CPMS=\"%s\"\r", GSM_MemoryTypeToString(memoryType));
-	snprintf(command, 20, "AT+CPMS=\"%s\",\"%s\",\"%s\"\r", GSM_MemoryTypeToString(memoryType), GSM_MemoryTypeToString(memoryType), GSM_MemoryTypeToString(memoryType));
+	snprintf(command, 24, "AT+CPMS=\"%s\",\"%s\",\"%s\"\r", GSM_MemoryTypeToString(memoryType), GSM_MemoryTypeToString(memoryType), GSM_MemoryTypeToString(memoryType));
 	if (writeable) {
 		// if it's writeable we assume it's also readable
 		snprintf(command + 12, 8, ",\"%s\"\r", GSM_MemoryTypeToString(memoryType));
