@@ -16,10 +16,6 @@
  * 
  * @note This file is part of the Gammu library and is licensed under the GNU General Public License.
  * 
- * @authors
- * - Michal Čihař
- * - Marcin Wiacek
- * 
  * @ingroup Phone
  * @{
  * @addtogroup ATPhone
