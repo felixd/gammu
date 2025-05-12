@@ -2878,6 +2878,52 @@ GSM_Error ATGEN_SetIncomingSMS(GSM_StateMachine *s, gboolean enable)
 	return ERR_NONE;
 }
 
+/**
+ * @brief Tests the number of parameters supported by the AT+CPMS command.
+ * 
+ * This function sends the AT+CPMS command to the modem with one, two, and three 
+ * parameters to determine the maximum number of parameters supported by the modem. 
+ * It starts by testing with one parameter and proceeds to test with two and three 
+ * parameters if the previous tests fail. The result is logged and returned.
+ * 
+ * AT+CPMS="SM"
+ * AT+CPMS="SM","SM"
+ * AT+CPMS="SM","SM","SM"
+ * 
+ * @param s Pointer to the GSM_StateMachine structure representing the modem state.
+ * @return int The number of parameters supported by the AT+CPMS command (1, 2, or 3).
+ */
+
+static int ATGEN_TestSMSMemoryParameters(GSM_StateMachine *s) {
+    GSM_Error error;
+    int supported_params = 1; // Default number of parameters
+    const char *test_cmd;
+    
+    // Test one parameter
+    test_cmd = "AT+CPMS=\"SM\"";
+    error = ATGEN_WaitFor(s, test_cmd, strlen(test_cmd), 0x00, 50, ID_SetMemoryType);
+    if (error == ERR_NONE) {
+        supported_params = 1;
+    } else {
+        // Test two parameters
+        test_cmd = "AT+CPMS=\"SM\",\"SM\"";
+        error = ATGEN_WaitFor(s, test_cmd, strlen(test_cmd), 0x00, 50, ID_SetMemoryType);
+        if (error == ERR_NONE) {
+            supported_params = 2;
+        } else {
+            // Test three parameters
+            test_cmd = "AT+CPMS=\"SM\",\"SM\",\"SM\"";
+            error = ATGEN_WaitFor(s, test_cmd, strlen(test_cmd), 0x00, 50, ID_SetMemoryType);
+            if (error == ERR_NONE) {
+                supported_params = 3;
+            }
+        }
+    }
+
+    smprintf(s, "Modem supports %d paremeter/-s for AT+CPMS command\n", supported_params);
+    return supported_params;
+}
+
 #ifdef GSM_ENABLE_CELLBROADCAST
 
 GSM_Error ATGEN_ReplyIncomingCB(GSM_Protocol_Message *msg, GSM_StateMachine *s)
