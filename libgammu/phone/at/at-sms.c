@@ -1,24 +1,40 @@
-/* (c) 2002-2008 by Marcin Wiacek and Michal Cihar */
-
+/* (c) 2002-2025 by Marcin Wiacek, Michal Cihar and Paweł 'felixd' Wojciechowski */
 /**
- * @file atgen.c
- * @author Michal Čihař
- * @author Marcin Wiacek
- */
-/**
+ * @file at-sms.c
+ * @brief This file contains the implementation of SMS-related functionalities for AT-based phones in the Gammu library.
+ * 
+ * The file provides functions to handle SMS operations such as setting SMSC, retrieving SMS memories, 
+ * reading, writing, deleting, and sending SMS messages, as well as handling incoming SMS notifications.
+ * 
+ * @details
+ * - The file implements AT commands for SMS operations, including `AT+CMGR`, `AT+CMGS`, `AT+CMGD`, and others.
+ * - It supports both PDU and text modes for SMS encoding and decoding.
+ * - The implementation includes handling of SMS memory types (e.g., SIM, phone memory) and their availability.
+ * - Incoming SMS and status report notifications are processed using unsolicited result codes.
+ * - The file also provides support for setting and retrieving SMSC (Short Message Service Center) information.
+ * - Some phone-specific quirks and features are handled, such as Motorola-style folders and Samsung-specific responses.
+ * 
+ * @note This file is part of the Gammu library and is licensed under the GNU General Public License.
+ * 
+ * @authors
+ * - Michal Čihař
+ * - Marcin Wiacek
+ * 
  * @ingroup Phone
  * @{
- */
-/**
  * @addtogroup ATPhone
  * @{
+
+ * @author Michal Čihař
+ * @author Marcin Wiacek
+ * @author Paweł 'felixd' Wojciechowski [FlameIT - Immersion Cooling]
  */
 
 #include "gammu-error.h"
 #define _GNU_SOURCE
 #include <gammu-config.h>
 
-#ifdef GSM_ENABLE_ATGEN
+// #ifdef GSM_ENABLE_ATGEN
 
 #include <string.h>
 #include <time.h>
